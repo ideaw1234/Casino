@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ส่งแต้ม</title>
+{% endblock title %}
+
+{% block content %}
+
+    <section class="content-section content-section-single">
+        <div class="content-container content-container-narrow">
+        <h3 class="content-title">ส่งแต้ม</h3>
+        <h5>คุณมีแต้มอยู่ : {{ point_user.point }}</h5>
+        {% if flash_message == "แต้มไม่พอลองอีกครั้ง" %}
+        <p style="color: rgb(255, 72, 0);">{{ flash_message }}</p>
+        {% endif %}
+        {% if flash_message == "ส่งแต้มสำเร็จ" %}
+        <p style="color: rgb(0, 171, 0);">{{ flash_message }}</p>
+        {% endif %}
+        <form action="{% url 'transfertoadmin' %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <div class="form-field">
+            <button class="button button-primary" type="submit">ส่งแต้ม</button>
+            </div>
+            <!-- <p>
+            <a href="{% url 'login' %}">เข้าสู่ระบบ</a>
+            </p> -->
+        </form>
+        </div>
+    </section>
+{% endblock content %}

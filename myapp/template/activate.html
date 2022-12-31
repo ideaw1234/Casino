@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>{{ title }}</title>
+{% endblock title %}
+
+{% block content %}
+    <section class="content-section content-section-single">
+        <div class="content-container content-container-narrow">
+        <h3 class="content-title">{{ title }}</h3>
+        <p>{{ description }}</p>
+        <p>
+            <a class="button button-primary" href="/login">เข้าสู่ระบบ</a>
+        </p>
+    </div>
+{% endblock content %}

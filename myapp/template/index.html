@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>หน้าแรก</title>
+{% endblock title %}    
+
+{% block content %}
+<section class="content-section content-section-single">
+    <div class="alert alert-secondary" role="alert">
+        ถ้าไม่พบชื่อคุณกรุณาไปอัปเดทโปรไฟล์
+        <a href="/profile">คลิกที่นี้</a>
+        หรือ <a href="https://www.facebook.com/IHasAnkles/">ติดต่อผู้ดูแลระบบ</a>
+    </div>
+
+    <h2 class="text-center">อันดับ</h2>
+    
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ไอดี</th>
+            <th scope="col">ชื่อ</th>
+            <th scope="col">แต้ม</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for profile in all_Profile  %}
+            <tr>
+                <th scope="row">{{profile.user.id}}</th>
+                <td>{{profile.user.username}}</td>
+                <td>{{profile.point}}</td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</section>
+{% endblock content %}

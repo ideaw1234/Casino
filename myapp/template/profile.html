@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>โปรไฟล์</title>
+{% endblock title %}
+
+{% block content %}
+<section class="content-section content-section-single">
+    <div class="content-container content-container-narrow">
+        <h3 class="content-title">สวัสดี {{ user.username }}</h3>
+        <p>
+        <a href="{% url 'profile' %}">ข้อมูลผู้ใช้</a>
+        <a href="{% url 'password_change' %}">เปลี่ยนรหัสผ่าน</a>
+        </p>
+        <hr>
+        <h4>ข้อมูลผู้ใช้</h4>
+        {% if flash_message %}
+        <p style="color: rgb(0, 171, 0);">{{ flash_message }}</p>
+        {% endif %}
+        <form action="{% url 'profile' %}" method="POST">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+        <div class="form-field">
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+        </div>
+        <div class="form-field">
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
+        </div>
+        <div class="form-field">
+            {{ extended_form.phone.label_tag }}
+            {{ extended_form.phone }}
+            {{ extended_form.phone.errors }}
+        </div>
+
+        <div class="form-field">
+            <button class="button button-primary" type="submit">บันทึก</button>
+        </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
