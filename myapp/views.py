@@ -10,7 +10,6 @@ from django.utils.encoding import force_bytes
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import get_user_model
 
-import sweetify
 from myapp.models import Profile,CustomUser
 from myapp.forms import *
 from myapp.utils.activation_token_generator import activation_token_generator
