@@ -1,2 +1,1 @@
-web: gunicorn Casino.wsgi
-release: python manage.py migrate
+web: python manage.py migrate && gunicorn myapp.wsgi
