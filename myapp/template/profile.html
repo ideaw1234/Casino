@@ -14,6 +14,9 @@
         </p>
         <hr>
         <h4>ข้อมูลผู้ใช้</h4>
+        {% for group in user.groups.all %}
+        <p>สถานะของคุณคือ : {{ group.name }}</p>
+        {% endfor %}
         {% if flash_message %}
         <p style="color: rgb(0, 171, 0);">{{ flash_message }}</p>
         {% endif %}
@@ -36,7 +39,11 @@
             {{ extended_form.phone }}
             {{ extended_form.phone.errors }}
         </div>
-
+        {% for group in user.groups.all %}
+        {% if group.name == 'player' %}
+        <p>wdwd</p>
+        {% endif %}
+        {% endfor %}
         <div class="form-field">
             <button class="button button-primary" type="submit">บันทึก</button>
         </div>
