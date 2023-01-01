@@ -29,7 +29,7 @@ DEBUG = True
 production_host = "casino-production.up.railway.app"
 ALLOWED_HOSTS = [production_host] if production_host is not None else ["127.0.0.1"]
 
-
+# ALLOWED_HOSTS = ["127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'Casino.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r"D:\code22.7\Casino\Casino\myapp\template"],
+        'DIRS': [BASE_DIR / 'myapp' /'template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
