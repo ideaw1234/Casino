@@ -10,6 +10,7 @@ from django.utils.encoding import force_bytes
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.utils import timezone
 
 from myapp.models import Profile,CustomUser
 from myapp.forms import *
@@ -17,8 +18,9 @@ from myapp.utils.activation_token_generator import activation_token_generator
 import time
 
 # Create your views here.
-def index(request):
-    CustomUser = get_user_model()
+def index(request: HttpRequest):
+
+    CustomUsers = get_user_model()
     all_Profile = Profile.objects.filter(user__is_staff=False).order_by("-point")
     context = {"all_Profile":all_Profile}
     return render(request,"index.html",context) 
@@ -32,8 +34,12 @@ def register(request: HttpRequest):
         if form.is_valid():
             #Register
             user:CustomUser = form.save(commit=False)
-            user.is_active = False
+            user.is_active = True
             user.save()
+            profile = Profile(user=user, phone='0000000000')
+            profile.point = 50
+            profile.date = timezone.now()
+            profile.save()
             group = Group.objects.get(name='Players')
             user.groups.add(group)
             #login(request,user)
@@ -86,7 +92,7 @@ def activate(request: HttpRequest,uidb64:str,token: str):
 
 @login_required
 def transfertoadmin(request:HttpRequest):
-    point_user = Profile.objects.get(user_id = request.user)
+    point_user = Profile.objects.get(user = request.user)
     flash_message = ""
     if request.method == 'POST':
         form = TransferPointAdminForm(request.POST)
