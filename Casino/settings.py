@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,14 +25,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "_i*z6z#*98@obs(=6m56@-^u!!nr%%63@z64z2l$qyupuliwjy"
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-production_host = "casino-production.up.railway.app"
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv("DEBUG") == "True"
+
+production_host = os.getenv("PRODUCTION_HOST")
 ALLOWED_HOSTS = [production_host] if production_host is not None else ["127.0.0.1"]
 
-# ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,12 +83,12 @@ WSGI_APPLICATION = 'Casino.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "mysql.connector.django",
-        "NAME": "railway",
-        "USER": "root",
-        "PASSWORD": "EYwqqQGN5JKJjAsS24s8",
-        "HOST": "containers-us-west-39.railway.app",
-        "PORT": 7399,
+        "ENGINE": os.getenv("DB_ENGINE", ""),
+        "NAME": os.getenv("DB_NAME", ""),
+        "USER": os.getenv("DB_USER", ""),
+        "PASSWORD": os.getenv("DB_PASS", ""),
+        "HOST": os.getenv("DB_HOST", ""),
+        "PORT": os.getenv("DB_PORT", ""),
     }
 }
 
@@ -154,9 +158,9 @@ if DEBUG:
     PASSWORD_RESET_TIMEOUT = 60
 else:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST="smtp.gmail.com"
-    EMAIL_PORT=587
-    EMAIL_USE_TLS=True
-    EMAIL_HOST_USER="62sw30507@sawananan.ac.th"
-    EMAIL_HOST_PASSWORD="ykxnjfshnsaloohw"
+    EMAIL_HOST = os.getenv("EMAIL_HOST")
+    EMAIL_PORT = os.getenv("EMAIL_PORT")
+    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
     PASSWORD_RESET_TIMEOUT = 600

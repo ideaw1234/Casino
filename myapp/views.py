@@ -9,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 from myapp.models import Profile,CustomUser
 from myapp.forms import *
@@ -33,6 +34,8 @@ def register(request: HttpRequest):
             user:CustomUser = form.save(commit=False)
             user.is_active = False
             user.save()
+            group = Group.objects.get(name='Players')
+            user.groups.add(group)
             #login(request,user)
             #Build emaill HTML
             context = {
