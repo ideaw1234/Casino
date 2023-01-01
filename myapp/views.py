@@ -34,7 +34,7 @@ def register(request: HttpRequest):
         if form.is_valid():
             #Register
             user:CustomUser = form.save(commit=False)
-            user.is_active = True
+            user.is_active = False
             user.save()
             profile = Profile(user=user, phone='0000000000')
             profile.point = 50
