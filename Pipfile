@@ -7,8 +7,15 @@ name = "pypi"
 django = "*"
 mysql-connector-python = "*"
 gunicorn = "*"
+whitenoise = "*"
+psycopg2-binary = "*"
+tzdata = "*"
+python-dotenv = "*"
 
 [dev-packages]
+bpython = "*"
+black = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.9"
