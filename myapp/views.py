@@ -15,12 +15,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
 
+
 from myapp.models import Profile,CustomUser,Transaction
 from myapp.forms import *
 from myapp.utils.activation_token_generator import activation_token_generator
 import time
-
 # Create your views here.
+
+
+
 def index(request: HttpRequest):
 
     CustomUsers = get_user_model()
@@ -178,7 +181,7 @@ def transfertouser(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
-                transaction = Transaction(sender=request.user, recipient=recipient, points=points)
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = timezone.now())
                 transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointUserForm()
