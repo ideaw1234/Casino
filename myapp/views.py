@@ -141,7 +141,7 @@ def transfertoadmin(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
-                transaction = Transaction(sender=request.user, recipient=recipient, points=points)
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = timezone.now())
                 transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointAdminForm()
