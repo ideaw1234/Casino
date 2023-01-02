@@ -72,7 +72,7 @@
                     <td scope="row">{{ transaction.sender }}</td>
                     <td>{{ transaction.recipient }}</td>
                     <td>{{ transaction.points }}</td>
-                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.timestamp|localtime }}</td>
                 </tr>
             {% endfor %}
             {% endif %}
