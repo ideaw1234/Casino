@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block content %}
+{% load tz %}
     <section class="content-section content-section-single">
         <div class="content-container content-container-narrow">
         <h3 class="content-title">สวัสดี {{ user.username }}</h3>
@@ -31,7 +32,7 @@
                     <td scope="row">{{ transaction.sender }}</td>
                     <td>{{ transaction.recipient }}</td>
                     <td>{{ transaction.points }}</td>
-                    <td>{{ transaction.timestamp }}</td>
+                    <td>{{ transaction.timestamp|localtime  }}</td>
                 </tr>
             {% endfor %}
             {% if all_paginator.num_pages > 1 %}
