@@ -74,55 +74,25 @@
                     <td>{{ transaction.timestamp }}</td>
                 </tr>
             {% endfor %}
-            {% if combined_paginator.num_pages > 1 %}
-            <div class="pagination">
-                <p class="page-links">
-                    {% if combined_page_obj.has_previous %}
-                        <a href="?page={{ combined_page_obj.previous_page_number }}" style="margin-right: 6px;">ย้อนกลับ</a>
-                    {% endif %}
-                    <p class="page-current">
-                        หน้า {{ combined_page_obj.number }} จาก {{ combined_page_obj.paginator.num_pages }}
-                    </p>
-                    {% if combined_page_obj.has_next %}
-                        <a href="?page={{ combined_page_obj.next_page_number }}" style="margin-left: 6px;">ถัดไป</a>
-                    {% endif %}
-                </p>
-            </div>
-        {% endif %}
-            <!-- {% if user_paginator.num_pages > 1 %}
-                <div class="pagination">
-                    <p class="page-links">
-                        {% if user_page_obj.has_previous %}
-                            <a href="?page={{ user_page_obj.previous_page_number }}" style="margin-right: 6px;">ย้อนกลับ</a>
-                        {% endif %}
-                        <p class="page-current">
-                            Page {{ user_page_obj.number }} of {{ user_page_obj.paginator.num_pages }}
-                        </p>
-                        {% if user_page_obj.has_next %}
-                            <a href="?page={{ user_page_obj.next_page_number }}" style="margin-left: 6px;">หน้าต่อไป</a>
-                        {% endif %}
-                    </p>
-                </div>
-            {% endif %}
-            {% if recipient_paginator.num_pages > 1 %}
-            <div class="pagination">
-                <p class="page-links">
-                    {% if recipient_page_obj.has_previous %}
-                        <a href="?page={{ recipient_page_obj.previous_page_number }}" style="margin-right: 6px;">ย้อนกลับ</a>
-                    {% endif %}
-                    <p class="page-current">
-                        Page {{ recipient_page_obj.number }} of {{ recipient_page_obj.paginator.num_pages }}
-                    </p>
-                    {% if recipient_page_obj.has_next %}
-                        <a href="?page={{ recipient_page_obj.next_page_number }}" style="margin-left: 6px;">หน้าต่อไป</a>
-                    {% endif %}
-                </p>
-            </div>
-            {% endif %} -->
             {% endif %}
             
             </tbody>
         </table>
+        {% if combined_paginator.num_pages > 1 %}
+        <div class="pagination">
+            <p class="page-links">
+                {% if combined_page_obj.has_previous %}
+                    <a href="?page={{ combined_page_obj.previous_page_number }}" style="margin-right: 6px;">ย้อนกลับ</a>
+                {% endif %}
+                <p class="page-current">
+                    หน้า {{ combined_page_obj.number }} จาก {{ combined_page_obj.paginator.num_pages }}
+                </p>
+                {% if combined_page_obj.has_next %}
+                    <a href="?page={{ combined_page_obj.next_page_number }}" style="margin-left: 6px;">ถัดไป</a>
+                {% endif %}
+            </p>
+        </div>
+    {% endif %}
     </section>
 {% endblock content %}
 

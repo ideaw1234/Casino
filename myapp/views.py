@@ -25,7 +25,7 @@ def index(request: HttpRequest):
 
     CustomUsers = get_user_model()
     all_Profile = Profile.objects.filter(user__is_staff=False).order_by("-point")
-    paginator = Paginator(all_Profile, 4)
+    paginator = Paginator(all_Profile, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
@@ -197,7 +197,7 @@ def trasaction(request:HttpRequest):
     all_transactions = Transaction.objects.all().order_by('-timestamp')
     user_transactions = Transaction.objects.filter(sender=request.user).order_by('-timestamp')
     recipient_transactions = Transaction.objects.filter(recipient=request.user).order_by('-timestamp')
-    per_page = 4
+    per_page = 10
     all_paginator = Paginator(all_transactions, per_page)
     all_page_number = request.GET.get('page')
     all_page_obj = all_paginator.get_page(all_page_number)
