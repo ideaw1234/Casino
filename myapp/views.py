@@ -1,5 +1,5 @@
 from django.core.mail import EmailMessage
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpRequest,HttpResponseRedirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, permission_required
@@ -11,8 +11,11 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.utils import timezone
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 
-from myapp.models import Profile,CustomUser
+from myapp.models import Profile,CustomUser,Transaction
 from myapp.forms import *
 from myapp.utils.activation_token_generator import activation_token_generator
 import time
@@ -22,7 +25,14 @@ def index(request: HttpRequest):
 
     CustomUsers = get_user_model()
     all_Profile = Profile.objects.filter(user__is_staff=False).order_by("-point")
-    context = {"all_Profile":all_Profile}
+    paginator = Paginator(all_Profile, 4)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+
+    context = {
+        "all_Profile":page.object_list,
+        "page": page
+        }
     return render(request,"index.html",context) 
 
 def about(request):
@@ -36,7 +46,7 @@ def register(request: HttpRequest):
             user:CustomUser = form.save(commit=False)
             user.is_active = False
             user.save()
-            profile = Profile(user=user, phone='0000000000')
+            profile = Profile(user=user, phone='')
             profile.point = 50
             profile.date = timezone.now()
             profile.save()
@@ -70,6 +80,7 @@ def register_thankyou(request: HttpRequest):
     return render(request,"register_thankyou.html")
 
 def activate(request: HttpRequest,uidb64:str,token: str):
+    
     title = "Activate account เรียบร้อย"
     description = "คุณสามารถเข้าสู่ระบบได้เลย"
     id = urlsafe_base64_decode(uidb64).decode()
@@ -85,6 +96,20 @@ def activate(request: HttpRequest,uidb64:str,token: str):
     
     context = {"title":title,"description":description}
     return render(request,"activate.html",context)
+# def login_view(request):
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             if user.is_active:
+#                 login(request, user)
+#                 return redirect('home')
+#             else:
+#                 # Return an 'inactive account' error message.
+#                 form.add_error(None, 'Your account is inactive.')
+#     else:
+#         form = AuthenticationForm()
+#     return render(request, 'login.html', {'form': form})
 
 # @login_required
 # def dashboard(request: HttpRequest):
@@ -113,6 +138,8 @@ def transfertoadmin(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points)
+                transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointAdminForm()
                 
@@ -151,6 +178,8 @@ def transfertouser(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points)
+                transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointUserForm()
     else:
@@ -163,6 +192,42 @@ def transfertouser(request:HttpRequest):
     }
     return render(request, 'transferTouser.html',context)
 
+@login_required
+def trasaction(request:HttpRequest):
+    all_transactions = Transaction.objects.all().order_by('-timestamp')
+    user_transactions = Transaction.objects.filter(sender=request.user).order_by('-timestamp')
+    recipient_transactions = Transaction.objects.filter(recipient=request.user).order_by('-timestamp')
+    per_page = 4
+    all_paginator = Paginator(all_transactions, per_page)
+    all_page_number = request.GET.get('page')
+    all_page_obj = all_paginator.get_page(all_page_number)
+    user_paginator = Paginator(user_transactions, per_page)
+    user_page_number = request.GET.get('page')
+    user_page_obj = user_paginator.get_page(user_page_number)
+    recipient_paginator = Paginator(recipient_transactions, per_page)
+    recipient_page_number = request.GET.get('page')
+    recipient_page_obj = recipient_paginator.get_page(recipient_page_number)
+    combined_transactions = user_transactions | recipient_transactions
+    combined_paginator = Paginator(combined_transactions, per_page)
+    combined_page_number = request.GET.get('page')
+    combined_page_obj = combined_paginator.get_page(combined_page_number)
+    
+
+
+    context = {
+        "all_page_obj": all_page_obj,
+        "all_paginator": all_paginator,
+        "user_transactions": user_transactions,
+        "user_paginator":user_paginator,
+        "user_page_obj":user_page_obj,
+        "recipient_transactions":recipient_transactions,
+        "recipient_page_obj": recipient_page_obj,
+        "recipient_paginator": recipient_paginator,
+        "combined_page_obj": combined_page_obj,
+        "combined_paginator": combined_paginator,
+    }
+    return render(request, 'trasaction.html',context)
+    
 
 
 @login_required

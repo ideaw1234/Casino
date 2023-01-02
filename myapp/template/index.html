@@ -5,7 +5,6 @@
 {% endblock title %}    
 
 {% block content %}
-
 <section class="content-section content-section-single">
     <div class="alert alert-secondary" role="alert">
         ถ้าไม่พบชื่อคุณกรุณาไปอัปเดทโปรไฟล์
@@ -13,26 +12,51 @@
         หรือ <a href="https://www.facebook.com/IHasAnkles/">ติดต่อผู้ดูแลระบบ</a>
     </div>
 
+    
+    
     <h2 class="text-center">อันดับ</h2>
     
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">ไอดี</th>
+            <th scope="col">อันดับ</th>
+            <!-- <th scope="col">ไอดี</th> -->
             <th scope="col">ชื่อ</th>
             <th scope="col">แต้ม</th>
         </tr>
         </thead>
         <tbody>
-            {% for profile in all_Profile  %}
-            <tr>
-                <th scope="row">{{profile.user.id}}</th>
-                <td>{{profile.user.username}}</td>
-                <td>{{profile.point}}</td>
-            </tr>
+            {% for  profile in page.object_list  %}
+                <tr>
+                    {% if page.number == 1 %}
+                    <th scope="row">{{ forloop.counter0|add:1 }}</th>
+                    {% elif page.number == 2 %}
+                        <th scope="row">{{ forloop.counter0|add:6 }}</th>
+                    {% elif page.number == 3 %}
+                        <th scope="row">{{ forloop.counter0|add:11 }}</th>
+                    {% else %}
+                        <th scope="row">{{ forloop.counter0|add:16 }}</th>
+                    {% endif %}
+                    <!-- <td >{{profile.user.id}}</td> -->
+                    <td>{{profile.user.username}}</td>
+                    <td>{{profile.point}}</td>
+                </tr>
             {% endfor %}
-            
         </tbody>
     </table>
+    <div class="pagination">
+        <p class="page-links">
+            {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}" style="margin-right: 6px;">ย้อนกลับ</a>
+            {% endif %}
+            <p class="page-current">
+                หน้า {{ page.number }} จาก {{page.paginator.num_pages }}
+            </p>
+            <!-- &sort=point&order=desc -->
+            {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }} "style="margin-left: 6px;">ถัดไป</a>
+            {% endif %}
+        </p>
+    </div>
 </section>
 {% endblock content %}

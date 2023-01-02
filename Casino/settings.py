@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
 load_dotenv()
 
 
@@ -143,7 +142,9 @@ AUTH_USER_MODEL = "myapp.CustomUser"
 AUTHENTICATION_BACKENDS = [
     "myapp.utils.auth_email_backend.EmailBackend",
     "django.contrib.auth.backends.ModelBackend",
+    "myapp.utils.authentication.CustomAuthBackend",
 ]
+
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
