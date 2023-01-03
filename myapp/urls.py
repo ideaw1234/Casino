@@ -1,5 +1,7 @@
 from django.urls import path,include
 from myapp import views
+# from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('',views.index,name="home"),
@@ -12,7 +14,7 @@ urlpatterns = [
     path('transfertouser',view=views.transfertouser,name="transfertouser"),
     path('trasaction',view=views.trasaction,name="trasaction"),
     path('profile',view=views.profile,name="profile"),
-    # path('login/', views.login_view, name='login'),
+    # path('login/', auth_views.LoginView.as_view(), name='login'),
     path('',include('django.contrib.auth.urls')),
 ]
 

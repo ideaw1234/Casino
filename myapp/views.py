@@ -14,7 +14,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
-
+from django.contrib import messages
 
 from myapp.models import Profile,CustomUser,Transaction
 from myapp.forms import *
@@ -101,24 +101,26 @@ def activate(request: HttpRequest,uidb64:str,token: str):
     
     context = {"title":title,"description":description}
     return render(request,"activate.html",context)
-# def login_view(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             if user.is_active:
-#                 login(request, user)
-#                 return redirect('home')
-#             else:
-#                 # Return an 'inactive account' error message.
-#                 form.add_error(None, 'Your account is inactive.')
-#     else:
-#         form = AuthenticationForm()
-#     return render(request, 'login.html', {'form': form})
 
-# @login_required
-# def dashboard(request: HttpRequest):
-#     return render(request,"dashboard.html")
+# def login_view(request):
+#     messages.success(request, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง')
+    
+#     # if request.method == 'POST':
+#     #     username = request.POST['username']
+#     #     password = request.POST['password']
+#     #     user = authenticate(request, username=username, password=password)
+#     #     if user is not None and user.is_active:
+#     #         login(request, user)
+#     #         messages.success(request, 'You have successfully logged in')
+#     #         # return redirect('home')
+#     #     # elif user.is_active == False:
+#     #     #     messages.success(request, 'กรุณายืนยันอีเมล์')
+#     #     #     return redirect(request, 'login.html')
+#     #     else:
+#     #         messages.success(request, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง')
+#     #         return redirect('login.html')
+#     # else:
+#     #     return render(request, 'login.html')
 
 @login_required
 def transfertoadmin(request:HttpRequest):
