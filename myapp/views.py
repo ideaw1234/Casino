@@ -143,7 +143,8 @@ def transfertoadmin(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
-                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = datetime.datetime.now(pytz.timezone('Asia/Bangkok')))
+                utc = pytz.utc
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = datetime.datetime.now(tz=utc))
                 transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointAdminForm()
@@ -183,7 +184,8 @@ def transfertouser(request:HttpRequest):
                 sender_points.save()
                 recipient_points.save()
                 flash_message = "ส่งแต้มสำเร็จ"
-                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = datetime.datetime.now(pytz.timezone('Asia/Bangkok')))
+                utc = pytz.utc
+                transaction = Transaction(sender=request.user, recipient=recipient, points=points,timestamp = datetime.datetime.now(tz=utc))
                 transaction.save()
                 point_user = Profile.objects.get(user_id = request.user)
                 form = TransferPointUserForm()
